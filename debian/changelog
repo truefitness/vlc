@@ -1,3 +1,9 @@
+vlc (2.1.3-1~ubuntu12.04.2~ppa1+true7) precise; urgency=low
+
+  * Patch to allow transport stream programs to share a video PID
+
+ -- Michael Nolan <mpnolan@truefitness.com>  Tue, 18 Nov 2014 14:49:17 -0600
+
 vlc (2.1.3-1~ubuntu12.04.2~ppa1+true6) precise; urgency=low
 
   * Add patch for improved performance with digital closed-captioning streams
