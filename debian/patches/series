@@ -1,4 +1,5 @@
-0002-Avoid-crash-when-reading-TS-with-invalid-PID.patch
-0003-Avoid-pushing-packets-to-PSI-parsers-if-the-transpor.patch
-0004-Add-pixel-aspect-ratio-patch-ported-from-VLC-2.0.8.patch
-0006-Patch-for-improved-performance-with-digital-closed-c.patch
+0001-Avoid-crash-when-reading-TS-with-invalid-PID.patch
+0002-Avoid-pushing-packets-to-PSI-parsers-if-the-transpor.patch
+0003-Add-pixel-aspect-ratio-patch-ported-from-VLC-2.0.8.patch
+0004-Patch-for-improved-performance-with-digital-closed-c.patch
+0005-Add-patch-for-programs-sharing-a-video-PID.patch

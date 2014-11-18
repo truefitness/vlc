@@ -1,0 +1,25 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Tue, 18 Nov 2014 14:40:21 -0600
+Subject: Add patch for programs sharing a video PID
+
+---
+ modules/demux/ts.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/modules/demux/ts.c b/modules/demux/ts.c
+index aec00b7..d84f1b6 100644
+--- a/modules/demux/ts.c
++++ b/modules/demux/ts.c
+@@ -4341,8 +4341,10 @@ static void PATCallBack( void *data, dvbpsi_pat_t *p_pat )
+         prg->i_number = p_program->i_number;
+         prg->i_pid_pmt = p_program->i_pid;
+ 
++        // mpn: Use user-selected program if passed, rather than defaulting to first
++        int prog = var_InheritInteger( p_demux, "program" );
+         /* Now select PID at access level */
+-        if( ProgramIsSelected( p_demux, p_program->i_number ) )
++        if((prog != 0 && p_program->i_number == prog) || (prog == 0 && ProgramIsSelected( p_demux, p_program->i_number)))
+         {
+             if( p_sys->i_current_program == 0 )
+                 p_sys->i_current_program = p_program->i_number;
+-- 
