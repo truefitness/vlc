@@ -52,7 +52,6 @@ confflags += \
 --disable-dxva2 \
 --disable-dvdread \
 --disable-dvdnav \
---disable-faad \
 --disable-fluidsynth \
 --disable-freerdp \
 --disable-gme \
@@ -95,6 +94,7 @@ confflags += \
 --enable-dvbpsi \
 --enable-fbosd \
 --enable-dv \
+--enable-faad \
 --enable-fast-install \
 --enable-freetype \
 --enable-libass \
@@ -112,6 +112,9 @@ confflags += \
 --enable-x264 \
 --enable-v4l2 \
 --enable-zvbi \
+--disable-notify \
+--disable-sdl \
+--disable-svg \
   $(NULL)
 
 # custom removeplugins lines for True Fitness
@@ -123,7 +126,6 @@ removeplugins += \
 	libdbus \
 	libdvdread \
 	libdvdnav \
-	libfaad \
 	liblinsys \
 	liblirc \
 	liboss \
@@ -142,6 +144,9 @@ removeplugins += \
 	libfluidsynth \
 	libjack \
 	libaccess_jack \
+  libsvg \
+  libsdl \
+  libnotify \
 	$(NULL)
 
 # PowerPCSPE specific optimizations
@@ -163,7 +168,7 @@ override_dh_autoreconf:
 	#dh_autoreconf --as-needed
 
 override_dh_auto_clean:
-	rm -f debian/vlc.install debian/vlc-nox.install
+	rm -f debian/vlc.install debian/vlc-nox.install debian/vlc-plugin-fluidsynth.install debian/vlc-plugin-jack.install debian/vlc-plugin-notify.install debian/vlc-plugin-sdl.install debian/vlc-plugin-svg.install
 	dh_auto_clean
 
 override_dh_auto_configure:
@@ -190,6 +195,9 @@ override_dh_install:
 	# next two lines were added by True
 	sed "/\($(shell echo $(removeplugins) | sed 's/ /\\|/g')\)_/d" debian/vlc-plugin-fluidsynth.install.in > debian/vlc-plugin-fluidsynth.install
 	sed "/\($(shell echo $(removeplugins) | sed 's/ /\\|/g')\)_/d" debian/vlc-plugin-jack.install.in > debian/vlc-plugin-jack.install
+	sed "/\($(shell echo $(removeplugins) | sed 's/ /\\|/g')\)_/d" debian/vlc-plugin-notify.install.in > debian/vlc-plugin-notify.install
+	sed "/\($(shell echo $(removeplugins) | sed 's/ /\\|/g')\)_/d" debian/vlc-plugin-sdl.install.in > debian/vlc-plugin-sdl.install
+	sed "/\($(shell echo $(removeplugins) | sed 's/ /\\|/g')\)_/d" debian/vlc-plugin-svg.install.in > debian/vlc-plugin-svg.install
 	# Clean up libtool crap
 	find debian/tmp -name '*.la' -delete
 	# Remove useless stuff
