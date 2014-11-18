@@ -1,0 +1,72 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Tue, 18 Nov 2014 09:16:07 -0600
+Subject: Avoid crash when reading TS with invalid PID
+
+---
+ modules/demux/ts.c |   17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/modules/demux/ts.c b/modules/demux/ts.c
+index 2a5977e..6945ea1 100644
+--- a/modules/demux/ts.c
++++ b/modules/demux/ts.c
+@@ -1366,6 +1366,8 @@ static void SetPrgFilter( demux_t *p_demux, int i_prg_id, bool b_selected )
+     for( int i = 0; i < p_sys->i_pmt; i++ )
+     {
+         ts_pid_t *pmt = p_sys->pmt[i];
++        if (pmt->b_valid != true) // TrueFit: don't run down invalid programs
++          continue;
+ 
+         for( int i_prg = 0; i_prg < pmt->psi->i_prg; i_prg++ )
+         {
+@@ -2163,7 +2165,10 @@ static void PCRHandle( demux_t *p_demux, ts_pid_t *pid, block_t *p_bk )
+         p_sys->i_current_pcr = AdjustPCRWrapAround( p_demux, i_pcr );
+ 
+     /* Search program and set the PCR */
+-    for( int i = 0; i < p_sys->i_pmt; i++ )
++    for( int i = 0; i < p_sys->i_pmt; i++ ) {
++        if (p_sys->pmt[i]->b_valid != true) // TrueFit - don't run down invalid pmt
++          continue;
++
+         for( int i_prg = 0; i_prg < p_sys->pmt[i]->psi->i_prg; i_prg++ )
+             if( pid->i_pid == p_sys->pmt[i]->psi->prg[i_prg]->i_pid_pcr )
+             {
+@@ -2172,6 +2177,7 @@ static void PCRHandle( demux_t *p_demux, ts_pid_t *pid, block_t *p_bk )
+                                 (int)p_sys->pmt[i]->psi->prg[i_prg]->i_number,
+                                 (int64_t)(VLC_TS_0 + i_pcr * 100 / 9) );
+             }
++    }
+ }
+ 
+ static bool GatherData( demux_t *p_demux, ts_pid_t *pid, block_t *p_bk )
+@@ -3933,7 +3939,10 @@ static void PMTCallBack( void *data, dvbpsi_pmt_t *p_pmt )
+     msg_Dbg( p_demux, "PMTCallBack called" );
+ 
+     /* First find this PMT declared in PAT */
+-    for( int i = 0; !pmt && i < p_sys->i_pmt; i++ )
++    for( int i = 0; !pmt && i < p_sys->i_pmt; i++ ) {
++        if (p_sys->pmt[i]->b_valid != true) // TrueFit - don't run down invalid pmt
++            continue;
++
+         for( int i_prg = 0; !pmt && i_prg < p_sys->pmt[i]->psi->i_prg; i_prg++ )
+         {
+             const int i_pmt_number = p_sys->pmt[i]->psi->prg[i_prg]->i_number;
+@@ -3944,6 +3953,7 @@ static void PMTCallBack( void *data, dvbpsi_pmt_t *p_pmt )
+                 prg = p_sys->pmt[i]->psi->prg[i_prg];
+             }
+         }
++    }
+ 
+     if( pmt == NULL )
+     {
+@@ -4217,6 +4227,9 @@ static void PATCallBack( void *data, dvbpsi_pat_t *p_pat )
+             ts_pid_t *pmt = p_sys->pmt[i];
+             bool b_keep = false;
+ 
++            if (pmt->b_valid != true) // TrueFit - don't run down invalid pmt
++                continue;
++
+             for( p_program = p_pat->p_first_program; !b_keep && p_program;
+                  p_program = p_program->p_next )
+             {
+-- 
