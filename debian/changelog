@@ -1,3 +1,9 @@
+vlc (2.1.3-1~ubuntu12.04.2~ppa1+true1) precise; urgency=low
+
+  * Initial build from PPA for True Fitness. This includes changes to debian/rules file only; no patches have yet been applied.
+
+ -- Michael Nolan <mpnolan@truefitness.com>  Mon, 12 May 2014 14:08:53 -0500
+
 vlc (2.1.3-1~ubuntu12.04.2~ppa1) precise; urgency=low
 
   * Rebuilt against latest libavcodec stable release (ffmpeg 2.2.1)
