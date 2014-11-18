@@ -1,0 +1,35 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Tue, 18 Nov 2014 09:21:46 -0600
+Subject: Avoid pushing packets to PSI parsers if the transport stream error
+ indicator is set
+
+---
+ modules/demux/ts.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/modules/demux/ts.c b/modules/demux/ts.c
+index 6945ea1..aec00b7 100644
+--- a/modules/demux/ts.c
++++ b/modules/demux/ts.c
+@@ -967,14 +967,17 @@ static int Demux( demux_t *p_demux )
+             {
+                 if( p_pid->i_pid == 0 || ( p_sys->b_dvb_meta && ( p_pid->i_pid == 0x11 || p_pid->i_pid == 0x12 || p_pid->i_pid == 0x14 ) ) )
+                 {
+-                    dvbpsi_PushPacket( p_pid->psi->handle, p_pkt->p_buffer );
++                    if ( !(p_pkt->p_buffer[1] & 0x80) )
++                        dvbpsi_PushPacket( p_pid->psi->handle, p_pkt->p_buffer );
+                 }
+                 else
+                 {
+                     for( int i_prg = 0; i_prg < p_pid->psi->i_prg; i_prg++ )
+                     {
+-                        dvbpsi_PushPacket( p_pid->psi->prg[i_prg]->handle,
+-                                           p_pkt->p_buffer );
++
++                        if ( !(p_pkt->p_buffer[1] & 0x80) )
++                            dvbpsi_PushPacket( p_pid->psi->prg[i_prg]->handle,
++                                             p_pkt->p_buffer );
+                     }
+                 }
+                 block_Release( p_pkt );
+-- 
