@@ -1,4 +1,0 @@
-vlc
-===
-
-VLC Media Player

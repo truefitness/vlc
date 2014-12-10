@@ -4,3 +4,4 @@
 0004-Patch-for-improved-performance-with-digital-closed-c.patch
 0005-Add-patch-for-programs-sharing-a-video-PID.patch
 0006-Add-upstream-commit-4a1493db19bb1db6a57b49bed385764a.patch
+0007-SAP-Traverse-subitems-when-sending-item-deleted-sign.patch

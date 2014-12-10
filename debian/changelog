@@ -1,3 +1,9 @@
+vlc (2.1.3-1~ubuntu12.04.2~ppa1+true9) precise; urgency=low
+
+  * SAP - Traverse subitems when sending item deleted signal.
+
+ -- Michael Nolan <mpnolan@truefitness.com>  Wed, 10 Dec 2014 16:33:54 -0600
+
 vlc (2.1.3-1~ubuntu12.04.2~ppa1+true8.1) precise; urgency=low
 
   * No changes. Bump version number to force install of this version, in order to test that the new repo/build works. 
