@@ -1,0 +1,55 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Fri, 30 Jan 2015 10:01:55 -0600
+Subject: Debug output. To be removed in final version
+
+---
+ modules/access/dtv/linux.c |    2 ++
+ src/input/input.c          |    1 +
+ src/misc/objects.c         |    1 +
+ 3 files changed, 4 insertions(+)
+
+diff --git a/modules/access/dtv/linux.c b/modules/access/dtv/linux.c
+index 278a142..a3480c2 100644
+--- a/modules/access/dtv/linux.c
++++ b/modules/access/dtv/linux.c
+@@ -281,6 +281,7 @@ error:
+ 
+ void dvb_close (dvb_device_t *d)
+ {
++  msg_Dbg(d->obj, "In dvb_close");
+ #ifndef USE_DMX
+     if (!d->budget)
+     {
+@@ -342,6 +343,7 @@ ssize_t dvb_read (dvb_device_t *d, void *buf, size_t len)
+     else
+         n = 1;
+ 
++msg_Dbg(d->obj, "About to call poll");
+     if (poll (ufd, n, 500 /* FIXME */) < 0)
+         return -1;
+ 
+diff --git a/src/input/input.c b/src/input/input.c
+index e3da454..7ca44a3 100644
+--- a/src/input/input.c
++++ b/src/input/input.c
+@@ -238,6 +238,7 @@ int input_Start( input_thread_t *p_input )
+  */
+ void input_Stop( input_thread_t *p_input, bool b_abort )
+ {
++  msg_Dbg(p_input, "input_Stop called");
+     /* Set die for input and ALL of this childrens (even (grand-)grand-childrens)
+      * It is needed here even if it is done in INPUT_CONTROL_SET_DIE handler to
+      * unlock the control loop */
+diff --git a/src/misc/objects.c b/src/misc/objects.c
+index 8e75313..ef041b0 100644
+--- a/src/misc/objects.c
++++ b/src/misc/objects.c
+@@ -383,6 +383,7 @@ int vlc_object_waitpipe( vlc_object_t *obj )
+  */
+ void ObjectKillChildrens( vlc_object_t *p_obj )
+ {
++  msg_Dbg(p_obj, "ObjectKillChildrens called for %p", p_obj);
+     /* FIXME ObjectKillChildrens seems a very bad idea in fact */
+     /*if( p_obj == VLC_OBJECT(p_input->p->p_sout) ) return;*/
+ 
+-- 
