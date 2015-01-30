@@ -1,0 +1,27 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Fri, 30 Jan 2015 10:01:30 -0600
+Subject: Fix race condition where stream thread is created after Stop signal
+ is received by threads, leaving a zombie stream thread
+
+---
+ src/input/input.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/input/input.c b/src/input/input.c
+index 1ed5b9f..e3da454 100644
+--- a/src/input/input.c
++++ b/src/input/input.c
+@@ -2482,6 +2482,12 @@ static int InputSourceInit( input_thread_t *p_input,
+         if( i_input_list > 0 )
+             TAB_APPEND( i_input_list, ppsz_input_list, NULL );
+ 
++if (!vlc_object_alive(p_input)) {
++  msg_Warn(p_input, "p_input was killed, so not proceeding with creating stream module. aborting");
++  access_Delete(p_access);
++  goto error;
++}
++
+         /* Create the stream_t */
+         in->p_stream = stream_AccessNew( p_access, ppsz_input_list );
+         if( ppsz_input_list )
+-- 
