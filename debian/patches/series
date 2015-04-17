@@ -6,3 +6,4 @@
 0006-Add-upstream-commit-4a1493db19bb1db6a57b49bed385764a.patch
 0007-SAP-Traverse-subitems-when-sending-item-deleted-sign.patch
 0008-Fix-up.patch
+0009-Add-back-delete-announcement-support-in-SAP-module.patch

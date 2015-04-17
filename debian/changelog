@@ -1,3 +1,9 @@
+vlc (2.1.3-1~ubuntu12.04.2~ppa1+true10) precise; urgency=low
+
+  * Add back delete announcement support in SAP module
+
+ -- Michael Nolan <mpnolan@truefitness.com>  Fri, 17 Apr 2015 09:38:15 -0500
+
 vlc (2.1.3-1~ubuntu12.04.2~ppa1+true9) precise; urgency=low
 
   * SAP - Traverse subitems when sending item deleted signal.
