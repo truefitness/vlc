@@ -1,0 +1,78 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Wed, 10 Dec 2014 16:31:16 -0600
+Subject: SAP - Traverse subitems when sending item deleted signal
+
+---
+ lib/media_discoverer.c |   27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
+
+diff --git a/lib/media_discoverer.c b/lib/media_discoverer.c
+index afa2891..8ea41cd 100644
+--- a/lib/media_discoverer.c
++++ b/lib/media_discoverer.c
+@@ -78,7 +78,9 @@ static void services_discovery_item_added( const vlc_event_t * p_event,
+         if( p_mlist == kVLCDictionaryNotFound )
+         {
+             libvlc_media_t * p_catmd;
++            // create a new media item with the name being the category
+             p_catmd = libvlc_media_new_as_node( p_mdis->p_libvlc_instance, psz_cat );
++            // get a reference to the subitem list
+             p_mlist = libvlc_media_subitems( p_catmd );
+             p_mlist->b_read_only = true;
+ 
+@@ -92,11 +94,13 @@ static void services_discovery_item_added( const vlc_event_t * p_event,
+ 
+             /* We don't release the mlist cause the dictionary
+              * doesn't retain the object. But we release the md. */
+-            libvlc_media_release( p_catmd );
++            //libvlc_media_release( p_catmd );
+         }
+     }
+ 
+     libvlc_media_list_lock( p_mlist );
++    // mpn: they are adding to the local list here, as set in line 76
++    // 
+     _libvlc_media_list_add_media( p_mlist, p_md );
+     libvlc_media_list_unlock( p_mlist );
+ 
+@@ -110,7 +114,7 @@ static void services_discovery_item_added( const vlc_event_t * p_event,
+ static void services_discovery_item_removed( const vlc_event_t * p_event,
+                                              void * user_data )
+ {
+-    input_item_t * p_item = p_event->u.services_discovery_item_added.p_new_item;
++    input_item_t * p_item = p_event->u.services_discovery_item_removed.p_item;
+     libvlc_media_t * p_md;
+     libvlc_media_discoverer_t * p_mdis = user_data;
+ 
+@@ -119,11 +123,30 @@ static void services_discovery_item_removed( const vlc_event_t * p_event,
+     for( i = 0; i < count; i++ )
+     {
+         p_md = libvlc_media_list_item_at_index( p_mdis->p_mlist, i );
++
+         if( p_md->p_input_item == p_item )
+         {
+             _libvlc_media_list_remove_index( p_mdis->p_mlist, i );
+             break;
+         }
++
++        // Traverse subitems in category (if there are any categories)
++        if (p_md) {
++          libvlc_media_list_t* p_subitems = libvlc_media_subitems(p_md);
++          if (p_subitems) {
++            libvlc_media_list_lock(p_subitems);
++            for (int j = 0; j < libvlc_media_list_count(p_subitems); j++) {
++              libvlc_media_t* p_subitem = libvlc_media_list_item_at_index(p_subitems, j);
++              if (p_subitem->p_input_item == p_item) {
++                msg_Dbg(p_mdis->p_sd,"Found item at %d; removing!", j);
++                _libvlc_media_list_remove_index(p_subitems, j);
++                break;
++              }
++            }
++            libvlc_media_list_unlock(p_subitems);
++          }
++          libvlc_media_release(p_md);
++        }
+     }
+     libvlc_media_list_unlock( p_mdis->p_mlist );
+ }
+-- 

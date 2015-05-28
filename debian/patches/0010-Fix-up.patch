@@ -1,0 +1,32 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Fri, 26 Dec 2014 17:24:12 -0600
+Subject: Fix up
+
+---
+ lib/media_discoverer.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lib/media_discoverer.c b/lib/media_discoverer.c
+index 8ea41cd..ba0391a 100644
+--- a/lib/media_discoverer.c
++++ b/lib/media_discoverer.c
+@@ -94,7 +94,7 @@ static void services_discovery_item_added( const vlc_event_t * p_event,
+ 
+             /* We don't release the mlist cause the dictionary
+              * doesn't retain the object. But we release the md. */
+-            //libvlc_media_release( p_catmd );
++            libvlc_media_release( p_catmd );
+         }
+     }
+ 
+@@ -144,8 +144,8 @@ static void services_discovery_item_removed( const vlc_event_t * p_event,
+               }
+             }
+             libvlc_media_list_unlock(p_subitems);
++            libvlc_media_list_release(p_subitems);
+           }
+-          libvlc_media_release(p_md);
+         }
+     }
+     libvlc_media_list_unlock( p_mdis->p_mlist );
+-- 
