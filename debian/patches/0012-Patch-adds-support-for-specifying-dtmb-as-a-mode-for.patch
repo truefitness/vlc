@@ -1,0 +1,132 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Mon, 15 Jun 2015 11:30:29 -0500
+Subject: =?UTF-8?q?Patch=20adds=20support=20for=20specifying=20"dtmb"=20as=20?=
+ =?UTF-8?q?a=20mode=20for=20setting=20up=20DTMB=20tuners,=20eg:=0Adtmb://fre?=
+ =?UTF-8?q?quency=3D184500000:modulation=3D64QAM:bandwidth=3D8mhz?=
+
+Signed-off-by: Luke Suchocki <luke.suchocki@embedtek.net>
+---
+ modules/access/dtv/access.c |   20 +++++++++++++++++++-
+ modules/access/dtv/dtv.h    |    5 +++++
+ modules/access/dtv/linux.c  |   19 ++++++++++++++++++-
+ 3 files changed, 42 insertions(+), 2 deletions(-)
+
+diff --git a/modules/access/dtv/access.c b/modules/access/dtv/access.c
+index bc6d64a..285563f 100644
+--- a/modules/access/dtv/access.c
++++ b/modules/access/dtv/access.c
+@@ -246,7 +246,7 @@ vlc_module_begin ()
+     add_shortcut ("dtv", "tv", "dvb", /* "radio", "dab",*/
+                   "cable", "dvb-c", "cqam", "isdb-c",
+                   "satellite", "dvb-s", "dvb-s2", "isdb-s",
+-                  "terrestrial", "dvb-t", "dvb-t2", "isdb-t", "atsc"
++                  "terrestrial", "dvb-t", "dvb-t2", "isdb-t", "atsc", "dtmb",
+ #ifdef _WIN32
+                   ,"dvbt"
+ #endif
+@@ -434,6 +434,7 @@ typedef struct delsys
+ static const delsys_t dvbc, dvbs, dvbs2, dvbt, dvbt2;
+ static const delsys_t isdbc, isdbs, isdbt;
+ static const delsys_t atsc, cqam;
++static const delsys_t dtmb;
+ 
+ static block_t *Read (access_t *);
+ static int Control (access_t *, int, va_list);
+@@ -636,6 +637,8 @@ static const delsys_t *GuessSystem (const char *scheme, dvb_device_t *dev)
+         return &isdbs;
+     if (!strcasecmp (scheme, "isdb-t"))
+         return &isdbt;
++    if (!strcasecmp (scheme, "dtmb"))
++        return &dtmb;
+ 
+     /* If the demodulator supports 2G, we cannot guess whether
+      * 1G or 2G is intended. For backward compatibility, 1G is assumed
+@@ -668,6 +671,9 @@ static const delsys_t *GuessSystem (const char *scheme, dvb_device_t *dev)
+             return &cqam;
+         if (systems & ISDB_T)
+             return &isdbt;
++        if (systems & DTMB)
++            return &dtmb;
++
+     }
+ 
+     /* Only standards family or nothing is specified */
+@@ -986,3 +992,15 @@ static int isdbt_setup (vlc_object_t *obj, dvb_device_t *dev, uint64_t freq)
+ }
+ 
+ static const delsys_t isdbt = { .setup = isdbt_setup };
++
++
++/*** DTMB, formerly known as DMB-T/H ***/
++static int dtmb_setup (vlc_object_t *obj, dvb_device_t *dev, uint64_t freq)
++{
++    const char *mod = var_InheritModulation (obj, "dvb-modulation");
++    uint32_t bw = var_InheritInteger (obj, "dvb-bandwidth");
++
++    return dvb_set_dtmb (dev, freq, mod, bw);
++}
++
++static const delsys_t dtmb = { .setup = dtmb_setup };
+diff --git a/modules/access/dtv/dtv.h b/modules/access/dtv/dtv.h
+index 6d85924..17766ef 100644
+--- a/modules/access/dtv/dtv.h
++++ b/modules/access/dtv/dtv.h
+@@ -40,6 +40,8 @@ enum {
+     ISDB_C = 0x00001000,
+     ISDB_S = 0x00002000,
+     ISDB_T = 0x00004000,
++
++    DTMB   = 0x00008000,
+ };
+ 
+ typedef struct dvb_device dvb_device_t;
+@@ -118,6 +120,9 @@ typedef struct isdbt_sound
+     uint8_t segment_count;
+ } isdbt_sound_t;
+ 
++/* DTMB */
++int dvb_set_dtmb (dvb_device_t *, uint32_t freq, const char* mod, uint32_t bw); 
++
+ # ifdef __cplusplus
+ }
+ # endif
+diff --git a/modules/access/dtv/linux.c b/modules/access/dtv/linux.c
+index 278a142..5a8167f 100644
+--- a/modules/access/dtv/linux.c
++++ b/modules/access/dtv/linux.c
+@@ -501,12 +501,12 @@ unsigned dvb_enum_systems (dvb_device_t *d)
+         [SYS_ISDBC]        = ISDB_C, // no drivers exist (as of 3.3-rc6)
+         [SYS_ATSC]         = ATSC,
+         //[SYS_ATSCMH]
+-        //[SYS_DMBTH]
+         //[SYS_CMMB]
+         //[SYS_DAB]
+         [SYS_DVBT2]        = DVB_T2,
+         //[SYS_TURBO]
+         [SYS_DVBC_ANNEX_C] = ISDB_C, // another name for ISDB-C?
++        [SYS_DTMB]         = DTMB,
+     };
+     unsigned systems = 0;
+ 
+@@ -1123,3 +1123,20 @@ int dvb_set_cqam (dvb_device_t *d, uint32_t freq, const char *modstr)
+                           DTV_DELIVERY_SYSTEM, SYS_DVBC_ANNEX_B,
+                           DTV_FREQUENCY, freq, DTV_MODULATION, mod);
+ }
++
++
++int dvb_set_dtmb (dvb_device_t *d, uint32_t freq, const char *modstr, uint32_t bandwidth)
++{
++    unsigned mod = dvb_parse_modulation (modstr, QAM_AUTO);
++    bandwidth = dvb_parse_bandwidth (bandwidth);
++
++    if (dvb_find_frontend (d, DTMB))
++        return -1;
++    return dvb_set_props (d, 5, 
++            DTV_CLEAR, 0,
++            DTV_DELIVERY_SYSTEM, SYS_DTMB,
++            DTV_FREQUENCY, freq, 
++            DTV_MODULATION, mod,
++            DTV_BANDWIDTH_HZ, bandwidth
++            );
++}
+-- 
