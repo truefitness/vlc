@@ -1,0 +1,58 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Fri, 26 Feb 2016 22:19:46 -0600
+Subject: Add API for getting Teletext tracks
+
+---
+ include/vlc/libvlc_media_player.h |    9 +++++++++
+ lib/libvlc.sym                    |    1 +
+ lib/video.c                       |    7 +++++++
+ 3 files changed, 17 insertions(+)
+
+diff --git a/include/vlc/libvlc_media_player.h b/include/vlc/libvlc_media_player.h
+index 2d5eefb..8385bf5 100644
+--- a/include/vlc/libvlc_media_player.h
++++ b/include/vlc/libvlc_media_player.h
+@@ -1071,6 +1071,15 @@ LIBVLC_API libvlc_track_description_t *
+         libvlc_video_get_spu_description( libvlc_media_player_t *p_mi );
+ 
+ /**
++ *
++ * Return a list of Teletext tracks as track_description_t. The i_int
++ * will be set to the SPU track and the psz_page to the Telx page.
++ *
++ */
++LIBVLC_API libvlc_track_description_t *
++        libvlc_video_get_teletext_tracks( libvlc_media_player_t *p_mi );
++
++/**
+  * Set new video subtitle.
+  *
+  * \param p_mi the media player
+diff --git a/lib/libvlc.sym b/lib/libvlc.sym
+index 6cc5ac0..0f4ebb9 100644
+--- a/lib/libvlc.sym
++++ b/lib/libvlc.sym
+@@ -256,3 +256,4 @@ libvlc_wait
+ libvlc_audio_filter_list_get
+ libvlc_video_filter_list_get
+ libvlc_module_description_list_release
++libvlc_video_get_teletext_tracks
+diff --git a/lib/video.c b/lib/video.c
+index 3a90caa..4bebce5 100644
+--- a/lib/video.c
++++ b/lib/video.c
+@@ -314,6 +314,13 @@ libvlc_track_description_t *
+     return libvlc_get_track_description( p_mi, "spu-es" );
+ }
+ 
++// mpn: Added this
++libvlc_track_description_t *
++        libvlc_video_get_teletext_tracks( libvlc_media_player_t *p_mi )
++{
++    return libvlc_get_track_description(p_mi, "teletext-es");
++}
++
+ int libvlc_video_set_spu( libvlc_media_player_t *p_mi, int i_spu )
+ {
+     input_thread_t *p_input_thread = libvlc_get_input_thread( p_mi );
+-- 
