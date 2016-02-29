@@ -1,3 +1,9 @@
+vlc (2.1.3-1~ubuntu12.04.2~ppa1+true11ubuntu4) precise; urgency=low
+
+  * Fix crash with NULL Teletext page number 
+
+ -- Michael Nolan <mpnolan@truefitness.com>  Mon, 29 Feb 2016 11:17:02 -0600
+
 vlc (2.1.3-1~ubuntu12.04.2~ppa1+true11ubuntu3) precise; urgency=low
 
   * Fix for upstream bug #11854 

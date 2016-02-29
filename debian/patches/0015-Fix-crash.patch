@@ -1,0 +1,22 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Mon, 29 Feb 2016 11:16:51 -0600
+Subject: Fix crash?
+
+---
+ src/input/es_out.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/input/es_out.c b/src/input/es_out.c
+index 8d6744a..388155d 100644
+--- a/src/input/es_out.c
++++ b/src/input/es_out.c
+@@ -937,7 +937,7 @@ static void EsOutESVarUpdateGeneric( es_out_t *out, int i_id,
+                   fmt->subs.teletext.i_magazine,
+                   fmt->subs.teletext.i_page );
+         input_SendEventTeletextAdd( p_sys->p_input,
+-                                    i_id, fmt->subs.teletext.i_magazine >= 0 ? psz_page : NULL );
++                                    i_id, fmt->subs.teletext.i_magazine >= 0 ? psz_page : "" );
+     }
+ 
+     free( text.psz_string );
+-- 
