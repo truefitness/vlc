@@ -1,3 +1,9 @@
+vlc (2.1.3-1~ubuntu12.04.2~ppa1+true13~1) precise; urgency=low
+
+  *  Add API for getting Teletext tracks
+
+ -- Mike Nolan <mpnolan@truefitness.com>  Fri, 26 Feb 2016 22:20:00 -0600
+
 vlc (2.1.3-1~ubuntu12.04.2~ppa1+true12) precise; urgency=low
 
   * Patch adds support for specifying "dtmb" as a mode for setting up DTMB tuners
