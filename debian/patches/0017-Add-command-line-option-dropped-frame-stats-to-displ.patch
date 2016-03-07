@@ -1,0 +1,82 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Tue, 1 Mar 2016 08:57:44 -0600
+Subject: Add command-line option "--dropped-frame-stats" to display number of
+ lost/shown frames each frame
+
+---
+ src/libvlc-module.c              |    7 +++++++
+ src/video_output/video_output.c  |   14 ++++++++++++++
+ src/video_output/vout_internal.h |    2 ++
+ 3 files changed, 23 insertions(+)
+
+diff --git a/src/libvlc-module.c b/src/libvlc-module.c
+index 5ecd5a5..96090cc 100644
+--- a/src/libvlc-module.c
++++ b/src/libvlc-module.c
+@@ -1042,6 +1042,10 @@ static const char *const ppsz_prefres[] = {
+ #define STATS_LONGTEXT N_( \
+      "Collect miscellaneous local statistics about the playing media.")
+ 
++#define DROPPED_FRAMES_TEXT N_("Display statistics on dropped frames")
++#define DROPPED_FRAMES_LONGTEXT N_( \
++     "True Fitness custom patch to display statistics on number of dropped frames.")
++
+ #define DAEMON_TEXT N_("Run as daemon process")
+ #define DAEMON_LONGTEXT N_( \
+      "Runs VLC as a background daemon process.")
+@@ -2086,6 +2090,9 @@ vlc_module_begin ()
+ 
+     add_bool ( "stats", true, STATS_TEXT, STATS_LONGTEXT, true )
+ 
++    add_bool( "dropped-frame-stats", false, DROPPED_FRAMES_TEXT, DROPPED_FRAMES_LONGTEXT, false )
++
++
+     set_subcategory( SUBCAT_INTERFACE_MAIN )
+     add_module_cat( "intf", SUBCAT_INTERFACE_MAIN, NULL, INTF_TEXT,
+                 INTF_LONGTEXT, false )
+diff --git a/src/video_output/video_output.c b/src/video_output/video_output.c
+index d2cb95d..7e57a26 100644
+--- a/src/video_output/video_output.c
++++ b/src/video_output/video_output.c
+@@ -152,6 +152,9 @@ static vout_thread_t *VoutCreate(vlc_object_t *object,
+     vout->p->title.show     = var_InheritBool(vout, "video-title-show");
+     vout->p->title.timeout  = var_InheritInteger(vout, "video-title-timeout");
+     vout->p->title.position = var_InheritInteger(vout, "video-title-position");
++    
++    // Display dropped frame stats
++    vout->p->dropped_frame_stats = var_InheritBool(vout, "dropped-frame-stats");
+ 
+     /* Get splitter name if present */
+     char *splitter_name = var_InheritString(vout, "video-splitter");
+@@ -289,6 +292,17 @@ void vout_ChangePause(vout_thread_t *vout, bool is_paused, mtime_t date)
+ void vout_GetResetStatistic(vout_thread_t *vout, int *displayed, int *lost)
+ {
+     vout_statistic_GetReset( &vout->p->statistic, displayed, lost );
++
++    if (vout->p->dropped_frame_stats) {
++      // Display dropped frames statistics
++      float ratio;
++      static int disp=0;
++      static int lt=0;
++      disp += *displayed;
++      lt += *lost;
++      ratio = (float) lt / (float)(disp + lt);
++      msg_Warn(vout, "DJH2 displayed=%d lost=%d ratio=%f", disp, lt, ratio);
++    }
+ }
+ 
+ void vout_Flush(vout_thread_t *vout, mtime_t date)
+diff --git a/src/video_output/vout_internal.h b/src/video_output/vout_internal.h
+index c695eb6..d3525dc 100644
+--- a/src/video_output/vout_internal.h
++++ b/src/video_output/vout_internal.h
+@@ -136,6 +136,8 @@ struct vout_thread_sys_t
+     picture_pool_t  *decoder_pool;
+     picture_fifo_t  *decoder_fifo;
+     vout_chrono_t   render;           /**< picture render time estimator */
++
++    bool dropped_frame_stats;
+ };
+ 
+ /* TODO to move them to vlc_vout.h */
+-- 
