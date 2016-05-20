@@ -15,3 +15,4 @@
 0015-Fix-for-upstream-bug-11854.patch
 0016-Fix-crash.patch
 0017-Add-command-line-option-dropped-frame-stats-to-displ.patch
+0018-Pad-A52-buffer-to-fix-crash-in-A-52-decoder.patch

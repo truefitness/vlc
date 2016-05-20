@@ -1,0 +1,33 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Fri, 20 May 2016 15:16:23 -0500
+Subject: Pad A52 buffer to fix crash in A/52 decoder
+
+---
+ src/audio_output/dec.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/audio_output/dec.c b/src/audio_output/dec.c
+index 7f857ed..70b83f0 100644
+--- a/src/audio_output/dec.c
++++ b/src/audio_output/dec.c
+@@ -37,6 +37,8 @@
+ #include "aout_internal.h"
+ #include "libvlc.h"
+ 
++#define A52_AUDIO_FIX_PADLENGTH 100
++
+ /**
+  * Creates an audio output
+  */
+@@ -192,6 +194,10 @@ block_t *aout_DecNewBuffer (audio_output_t *aout, size_t samples)
+ 
+     size_t length = samples * owner->input_format.i_bytes_per_frame
+                             / owner->input_format.i_frame_length;
++    if (owner->input_format.i_format == VLC_CODEC_A52) {
++        //msg_Dbg (aout, "Padding block for A52!");
++        length += A52_AUDIO_FIX_PADLENGTH;
++    }
+     block_t *block = block_Alloc( length );
+     if( likely(block != NULL) )
+     {
+-- 
