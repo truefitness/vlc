@@ -1,0 +1,24 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Tue, 24 May 2016 16:55:07 -0500
+Subject: Call a52_frame_safe to pass size of buffer in order to do bounds
+ checking
+
+---
+ modules/audio_filter/converter/a52tofloat32.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/modules/audio_filter/converter/a52tofloat32.c b/modules/audio_filter/converter/a52tofloat32.c
+index d808418..403904c 100644
+--- a/modules/audio_filter/converter/a52tofloat32.c
++++ b/modules/audio_filter/converter/a52tofloat32.c
+@@ -301,7 +301,8 @@ static block_t *Convert( filter_t *p_filter, block_t *p_in_buf )
+         goto out;
+ 
+     /* Do the actual decoding now. */
+-    a52_frame( p_sys->p_liba52, p_in_buf->p_buffer,
++    a52_frame_safe( p_sys->p_liba52, p_in_buf->p_buffer,
++               p_in_buf->i_buffer / (sizeof(uint32_t)),
+                &i_flags, &i_sample_level, 0 );
+ 
+     if ( (i_flags & A52_CHANNEL_MASK) != (p_sys->i_flags & A52_CHANNEL_MASK)
+-- 
