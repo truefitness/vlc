@@ -20,3 +20,4 @@
 0020-Debug-freetype-delete.patch
 0021-More.patch
 0022-Free-scaler.patch
+0023-See-if-adding-to-struct-increases-memory-loss.patch

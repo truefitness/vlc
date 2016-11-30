@@ -1,0 +1,21 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Wed, 30 Nov 2016 17:03:55 -0600
+Subject: See if adding to struct increases memory loss
+
+---
+ modules/text_renderer/freetype.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/modules/text_renderer/freetype.c b/modules/text_renderer/freetype.c
+index 18bfd47..7fda15b 100644
+--- a/modules/text_renderer/freetype.c
++++ b/modules/text_renderer/freetype.c
+@@ -307,6 +307,7 @@ struct FTC_MySBit_Rec {
+     FTC_SBit sbit;
+     int top;
+     int left;
++    int extra;
+ };
+ typedef struct FTC_MySBit_Rec* FTC_MySBit;
+ 
+-- 
