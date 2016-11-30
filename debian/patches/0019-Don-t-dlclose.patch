@@ -1,0 +1,25 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Wed, 30 Nov 2016 09:54:38 -0600
+Subject: Don't dlclose()
+
+---
+ src/posix/plugin.c |    4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/src/posix/plugin.c b/src/posix/plugin.c
+index 150c105..77a9b4c 100644
+--- a/src/posix/plugin.c
++++ b/src/posix/plugin.c
+@@ -78,11 +78,7 @@ int module_Load (vlc_object_t *p_this, const char *path,
+  */
+ void module_Unload( module_handle_t handle )
+ {
+-#ifdef HAVE_VALGRIND_VALGRIND_H
+-    if( RUNNING_ON_VALGRIND > 0 )
+         return; /* do not dlclose() so that we get proper stack traces */
+-#endif
+-    dlclose( handle );
+ }
+ 
+ /**
+-- 
