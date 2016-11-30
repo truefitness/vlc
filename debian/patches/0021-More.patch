@@ -1,0 +1,40 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Wed, 30 Nov 2016 14:11:10 -0600
+Subject: More
+
+---
+ modules/text_renderer/freetype.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/modules/text_renderer/freetype.c b/modules/text_renderer/freetype.c
+index f94ed24..21042c0 100644
+--- a/modules/text_renderer/freetype.c
++++ b/modules/text_renderer/freetype.c
+@@ -2866,21 +2866,22 @@ static int RenderCommon( filter_t *p_filter, subpicture_region_t *p_region_out,
+     FreeLines( p_lines );
+ 
+     free( psz_text );
++    static int counter = 0;
++    counter++;
+     for( int i = 0; i < i_text_length; i++ )
+     {
+-      static int counter = 0;
+-      counter++;
+         if( pp_styles[i] && ( i + 1 == i_text_length || pp_styles[i] != pp_styles[i + 1] ) ) {
+-          if (counter % 100 == 0) {
++          if (counter % 10 == 0) {
+             msg_Warn( p_filter, "deleting pointer %p\n", pp_styles[i] );
+           }
+             text_style_Delete( pp_styles[i] );
+         } else {
+-          if (counter % 100 == 0) {
++          if (counter % 10 == 0) {
+             msg_Warn( p_filter, "skipping pointer %p\n", pp_styles[i] );
+           }
+         }
+     }
++    msg_Warn( p_filter, "--DONE--" );
+     free( pp_styles );
+     free( pi_k_durations );
+ 
+-- 
