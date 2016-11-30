@@ -19,3 +19,4 @@
 0019-Don-t-dlclose.patch
 0020-Debug-freetype-delete.patch
 0021-More.patch
+0022-Free-scaler.patch

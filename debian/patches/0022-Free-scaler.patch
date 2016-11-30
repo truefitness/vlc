@@ -1,0 +1,41 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Wed, 30 Nov 2016 16:21:59 -0600
+Subject: Free scaler
+
+---
+ modules/text_renderer/freetype.c |   21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
+
+diff --git a/modules/text_renderer/freetype.c b/modules/text_renderer/freetype.c
+index 21042c0..18bfd47 100644
+--- a/modules/text_renderer/freetype.c
++++ b/modules/text_renderer/freetype.c
+@@ -2406,15 +2406,18 @@ static int ProcessLines( filter_t *p_filter,
+             if( !p_previous_style || p_previous_style->i_font_size != p_current_style->i_font_size )
+             {
+                 FTC_Scaler scaler = malloc(sizeof (FTC_ScalerRec));
+-		scaler->face_id = p_current_face_id;
+-		scaler->height = p_current_style->i_font_size;
+-		scaler->width = 20;
+-		scaler->pixel = 1;
+-
+-		int ret = FTC_Manager_LookupSize(p_sys->p_ftc_manager, scaler, &p_current_size);
+-		if (ret) {
+-                    msg_Err( p_filter, "Failed to set font size to %d", p_current_style->i_font_size );
+-		}
++                scaler->face_id = p_current_face_id;
++                scaler->height = p_current_style->i_font_size;
++                scaler->width = 20;
++                scaler->pixel = 1;
++
++                int ret = FTC_Manager_LookupSize(p_sys->p_ftc_manager, scaler, &p_current_size);
++
++                free(scaler);
++
++                if (ret) {
++                  msg_Err( p_filter, "Failed to set font size to %d", p_current_style->i_font_size );
++                }
+ 
+                 if( p_sys->p_stroker )
+                 {
+-- 
