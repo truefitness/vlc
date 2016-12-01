@@ -1,0 +1,37 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Wed, 30 Nov 2016 19:43:46 -0600
+Subject: More fixes
+
+---
+ modules/text_renderer/freetype.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/modules/text_renderer/freetype.c b/modules/text_renderer/freetype.c
+index 31e9e90..2900d45 100644
+--- a/modules/text_renderer/freetype.c
++++ b/modules/text_renderer/freetype.c
+@@ -2488,13 +2488,17 @@ static int ProcessLines( filter_t *p_filter,
+                               &pen_new, &pen_shadow_new ) )
+                     goto next;
+ 
+-		glyph->top = pen_new.y + glyph->sbit->top;
+-		glyph->left = pen_new.x + glyph->sbit->left;
++                glyph->top = pen_new.y + glyph->sbit->top;
++                glyph->left = pen_new.x + glyph->sbit->left;
+ 
+-		if (!outline->sbit)
+-                   outline = NULL;
+-		if (!shadow->sbit)
+-                   shadow = NULL;
++                if (!outline->sbit) {
++                  free(outline);
++                  outline = NULL;
++                }
++                if (!shadow->sbit) {
++                  free(shadow);
++                  shadow = NULL;
++                }
+ 
+                 FixGlyph( glyph, &glyph_bbox, p_current_face, &pen_new );
+                 if( outline )
+-- 
