@@ -1,0 +1,84 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Wed, 30 Nov 2016 16:21:59 -0600
+Subject: Fix memory leak that can occur when analog closed captions are being
+ used
+
+This leak was introduced by the patch "Patch for improved performance with digital closed captions". This change fixes the leaks in that patch.
+
+Free scaler
+
+Free line
+
+More fixes
+---
+ modules/text_renderer/freetype.c |   39 +++++++++++++++++++++++---------------
+ 1 file changed, 24 insertions(+), 15 deletions(-)
+
+diff --git a/modules/text_renderer/freetype.c b/modules/text_renderer/freetype.c
+index 8e21053..a1a4c59 100644
+--- a/modules/text_renderer/freetype.c
++++ b/modules/text_renderer/freetype.c
+@@ -2406,15 +2406,18 @@ static int ProcessLines( filter_t *p_filter,
+             if( !p_previous_style || p_previous_style->i_font_size != p_current_style->i_font_size )
+             {
+                 FTC_Scaler scaler = malloc(sizeof (FTC_ScalerRec));
+-		scaler->face_id = p_current_face_id;
+-		scaler->height = p_current_style->i_font_size;
+-		scaler->width = 20;
+-		scaler->pixel = 1;
++                scaler->face_id = p_current_face_id;
++                scaler->height = p_current_style->i_font_size;
++                scaler->width = 20;
++                scaler->pixel = 1;
+ 
+-		int ret = FTC_Manager_LookupSize(p_sys->p_ftc_manager, scaler, &p_current_size);
+-		if (ret) {
+-                    msg_Err( p_filter, "Failed to set font size to %d", p_current_style->i_font_size );
+-		}
++                int ret = FTC_Manager_LookupSize(p_sys->p_ftc_manager, scaler, &p_current_size);
++
++                free(scaler);
++
++                if (ret) {
++                  msg_Err( p_filter, "Failed to set font size to %d", p_current_style->i_font_size );
++                }
+ 
+                 if( p_sys->p_stroker )
+                 {
+@@ -2484,13 +2487,17 @@ static int ProcessLines( filter_t *p_filter,
+                               &pen_new, &pen_shadow_new ) )
+                     goto next;
+ 
+-		glyph->top = pen_new.y + glyph->sbit->top;
+-		glyph->left = pen_new.x + glyph->sbit->left;
++                glyph->top = pen_new.y + glyph->sbit->top;
++                glyph->left = pen_new.x + glyph->sbit->left;
+ 
+-		if (!outline->sbit)
+-                   outline = NULL;
+-		if (!shadow->sbit)
+-                   shadow = NULL;
++                if (!outline->sbit) {
++                  free(outline);
++                  outline = NULL;
++                }
++                if (!shadow->sbit) {
++                  free(shadow);
++                  shadow = NULL;
++                }
+ 
+                 FixGlyph( glyph, &glyph_bbox, p_current_face, &pen_new );
+                 if( outline )
+@@ -2608,8 +2615,10 @@ static int ProcessLines( filter_t *p_filter,
+                 break;
+         }
+ 
+-        if (i_leading_blank_line)
++        if (i_leading_blank_line) {
++            FreeLine(p_line);
+             continue;
++        }
+ #undef SAVE_BP
+         /* Update our baseline */
+         if( i_face_height_previous > 0 )
+-- 
