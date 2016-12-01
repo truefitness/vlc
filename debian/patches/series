@@ -15,3 +15,4 @@
 0015-Fix-crash.patch
 0016-Add-command-line-option-dropped-frame-stats-to-displ.patch
 0017-Call-a52_frame_safe-to-pass-size-of-buffer-in-order-.patch
+0018-Fix-memory-leak-that-can-occur-when-analog-closed-ca.patch
