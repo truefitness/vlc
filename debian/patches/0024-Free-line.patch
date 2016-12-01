@@ -1,0 +1,25 @@
+From: Mike Nolan <mpnolan@truefitness.com>
+Date: Wed, 30 Nov 2016 19:10:00 -0600
+Subject: Free line
+
+---
+ modules/text_renderer/freetype.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/modules/text_renderer/freetype.c b/modules/text_renderer/freetype.c
+index 7fda15b..31e9e90 100644
+--- a/modules/text_renderer/freetype.c
++++ b/modules/text_renderer/freetype.c
+@@ -2612,8 +2612,10 @@ static int ProcessLines( filter_t *p_filter,
+                 break;
+         }
+ 
+-        if (i_leading_blank_line)
++        if (i_leading_blank_line) {
++            FreeLine(p_line);
+             continue;
++        }
+ #undef SAVE_BP
+         /* Update our baseline */
+         if( i_face_height_previous > 0 )
+-- 
