@@ -1,3 +1,9 @@
+vlc (1:2.1.3-1~ubuntu12.04.2~ppa1~veracity+true15) precise; urgency=low
+
+  * Fix memory leak that occurs when analog closed captions are being used 
+
+ -- Michael Nolan <mpnolan@truefitness.com>  Thu, 01 Dec 2016 10:48:44 -0600
+
 vlc (1:2.1.3-1~ubuntu12.04.2~ppa1~veracity+true14) precise; urgency=low
 
   * Do bounds checking on a52 frame decoding to prevent segfault
