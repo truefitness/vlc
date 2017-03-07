@@ -3,7 +3,7 @@ Date: Fri, 26 Dec 2014 17:24:12 -0600
 Subject: Fix up
 
 ---
- lib/media_discoverer.c |    4 ++--
+ lib/media_discoverer.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/lib/media_discoverer.c b/lib/media_discoverer.c
@@ -29,4 +29,3 @@ index 8ea41cd..ba0391a 100644
          }
      }
      libvlc_media_list_unlock( p_mdis->p_mlist );
--- 

@@ -1,14 +1,13 @@
 From: Mike Nolan <mpnolan@truefitness.com>
 Date: Mon, 15 Jun 2015 11:30:29 -0500
-Subject: =?UTF-8?q?Patch=20adds=20support=20for=20specifying=20"dtmb"=20as=20?=
- =?UTF-8?q?a=20mode=20for=20setting=20up=20DTMB=20tuners,=20eg:=0Adtmb://fre?=
- =?UTF-8?q?quency=3D184500000:modulation=3D64QAM:bandwidth=3D8mhz?=
+Subject: Patch adds support for specifying "dtmb" as a mode for setting up
+ DTMB tuners, eg: dtmb://frequency=184500000:modulation=64QAM:bandwidth=8mhz
 
 Signed-off-by: Luke Suchocki <luke.suchocki@embedtek.net>
 ---
- modules/access/dtv/access.c |   20 +++++++++++++++++++-
- modules/access/dtv/dtv.h    |    5 +++++
- modules/access/dtv/linux.c  |   19 ++++++++++++++++++-
+ modules/access/dtv/access.c | 20 +++++++++++++++++++-
+ modules/access/dtv/dtv.h    |  5 +++++
+ modules/access/dtv/linux.c  | 19 ++++++++++++++++++-
  3 files changed, 42 insertions(+), 2 deletions(-)
 
 diff --git a/modules/access/dtv/access.c b/modules/access/dtv/access.c
@@ -129,4 +128,3 @@ index 278a142..5a8167f 100644
 +            DTV_BANDWIDTH_HZ, bandwidth
 +            );
 +}
--- 

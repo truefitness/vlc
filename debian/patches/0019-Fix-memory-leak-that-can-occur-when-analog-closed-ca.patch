@@ -11,7 +11,7 @@ Free line
 
 More fixes
 ---
- modules/text_renderer/freetype.c |   39 +++++++++++++++++++++++---------------
+ modules/text_renderer/freetype.c | 39 ++++++++++++++++++++++++---------------
  1 file changed, 24 insertions(+), 15 deletions(-)
 
 diff --git a/modules/text_renderer/freetype.c b/modules/text_renderer/freetype.c
@@ -81,4 +81,3 @@ index 8e21053..a1a4c59 100644
  #undef SAVE_BP
          /* Update our baseline */
          if( i_face_height_previous > 0 )
--- 

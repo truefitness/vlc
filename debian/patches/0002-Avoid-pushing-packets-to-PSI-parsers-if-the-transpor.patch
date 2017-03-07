@@ -4,7 +4,7 @@ Subject: Avoid pushing packets to PSI parsers if the transport stream error
  indicator is set
 
 ---
- modules/demux/ts.c |    9 ++++++---
+ modules/demux/ts.c | 9 ++++++---
  1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/modules/demux/ts.c b/modules/demux/ts.c
@@ -32,4 +32,3 @@ index 6945ea1..aec00b7 100644
                      }
                  }
                  block_Release( p_pkt );
--- 

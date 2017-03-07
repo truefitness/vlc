@@ -3,7 +3,7 @@ Date: Sun, 28 Feb 2016 22:43:54 -0600
 Subject: Fix for upstream bug #11854
 
 ---
- lib/video.c |   14 +++++++++++---
+ lib/video.c | 14 +++++++++++---
  1 file changed, 11 insertions(+), 3 deletions(-)
 
 diff --git a/lib/video.c b/lib/video.c
@@ -35,4 +35,3 @@ index 4bebce5..c358d0a 100644
      vlc_object_release( p_input_thread );
  }
  
--- 

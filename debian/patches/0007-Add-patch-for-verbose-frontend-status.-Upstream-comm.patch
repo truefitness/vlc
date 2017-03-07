@@ -4,7 +4,7 @@ Subject: Add patch for verbose frontend status. Upstream commit
  a4d4690c5f8dc73e97d05244fe9e6eaf19527130
 
 ---
- modules/access/dtv/linux.c |   19 ++++++++++++++++++-
+ modules/access/dtv/linux.c | 19 ++++++++++++++++++-
  1 file changed, 18 insertions(+), 1 deletion(-)
 
 diff --git a/modules/access/dtv/linux.c b/modules/access/dtv/linux.c
@@ -44,4 +44,3 @@ index a3f81b5..278a142 100644
      }
  
      if (ufd[0].revents)
--- 

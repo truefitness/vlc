@@ -3,7 +3,7 @@ Date: Tue, 1 Mar 2016 09:31:55 -0600
 Subject: Remove the closed captioning optimizations which broke Teletext
 
 ---
- modules/video_filter/blend.cpp |  135 +++-------------------------------------
+ modules/video_filter/blend.cpp | 135 +++--------------------------------------
  1 file changed, 10 insertions(+), 125 deletions(-)
 
 diff --git a/modules/video_filter/blend.cpp b/modules/video_filter/blend.cpp
@@ -201,4 +201,3 @@ index b153b05..1fd44f3 100644
              if (dst.isFull(x))
                  dst.merge(x, spx, a, true);
              else
--- 

@@ -4,9 +4,9 @@ Subject: Add command-line option "--dropped-frame-stats" to display number of
  lost/shown frames each frame
 
 ---
- src/libvlc-module.c              |    7 +++++++
- src/video_output/video_output.c  |   14 ++++++++++++++
- src/video_output/vout_internal.h |    2 ++
+ src/libvlc-module.c              |  7 +++++++
+ src/video_output/video_output.c  | 14 ++++++++++++++
+ src/video_output/vout_internal.h |  2 ++
  3 files changed, 23 insertions(+)
 
 diff --git a/src/libvlc-module.c b/src/libvlc-module.c
@@ -79,4 +79,3 @@ index c695eb6..d3525dc 100644
  };
  
  /* TODO to move them to vlc_vout.h */
--- 

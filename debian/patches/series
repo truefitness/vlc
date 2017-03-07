@@ -17,3 +17,4 @@
 0017-Add-command-line-option-dropped-frame-stats-to-displ.patch
 0018-Call-a52_frame_safe-to-pass-size-of-buffer-in-order-.patch
 0019-Fix-memory-leak-that-can-occur-when-analog-closed-ca.patch
+0020-Initial-support-for-fuse_proidiom-driver.patch

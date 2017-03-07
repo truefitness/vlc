@@ -3,7 +3,7 @@ Date: Mon, 29 Feb 2016 11:16:51 -0600
 Subject: Fix crash?
 
 ---
- src/input/es_out.c |    2 +-
+ src/input/es_out.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/input/es_out.c b/src/input/es_out.c
@@ -19,4 +19,3 @@ index 8d6744a..388155d 100644
      }
  
      free( text.psz_string );
--- 

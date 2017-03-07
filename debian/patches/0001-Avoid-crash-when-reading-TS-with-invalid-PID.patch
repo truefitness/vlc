@@ -3,7 +3,7 @@ Date: Tue, 18 Nov 2014 09:16:07 -0600
 Subject: Avoid crash when reading TS with invalid PID
 
 ---
- modules/demux/ts.c |   17 +++++++++++++++--
+ modules/demux/ts.c | 17 +++++++++++++++--
  1 file changed, 15 insertions(+), 2 deletions(-)
 
 diff --git a/modules/demux/ts.c b/modules/demux/ts.c
@@ -69,4 +69,3 @@ index 2a5977e..6945ea1 100644
              for( p_program = p_pat->p_first_program; !b_keep && p_program;
                   p_program = p_program->p_next )
              {
--- 

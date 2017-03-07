@@ -1,0 +1,40 @@
+From: Robert Hedges <rhedges@truefitness.com>
+Date: Tue, 7 Mar 2017 09:47:13 -0600
+Subject: Initial support for fuse_proidiom driver
+
+Supplied by Embedtek
+---
+ modules/access/dtv/en50221.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/modules/access/dtv/en50221.c b/modules/access/dtv/en50221.c
+index 659dd17..2b2b2cb 100644
+--- a/modules/access/dtv/en50221.c
++++ b/modules/access/dtv/en50221.c
+@@ -1041,7 +1041,7 @@ static bool CAPMTNeedsDescrambling( dvbpsi_pmt_t *p_pmt )
+ 
+     for( p_dr = p_pmt->p_first_descriptor; p_dr != NULL; p_dr = p_dr->p_next )
+     {
+-        if( p_dr->i_tag == 0x9 )
++        if( p_dr->i_tag == 0x9 || p_dr->i_tag == 0xad )
+         {
+             return true;
+         }
+@@ -1052,7 +1052,7 @@ static bool CAPMTNeedsDescrambling( dvbpsi_pmt_t *p_pmt )
+         for( p_dr = p_es->p_first_descriptor; p_dr != NULL;
+              p_dr = p_dr->p_next )
+         {
+-            if( p_dr->i_tag == 0x9 )
++            if( p_dr->i_tag == 0x9 || p_dr->i_tag == 0xad )
+             {
+                 return true;
+             }
+@@ -1071,7 +1071,7 @@ static int GetCADSize( system_ids_t *p_ids, dvbpsi_descriptor_t *p_dr )
+ 
+     while ( p_dr != NULL )
+     {
+-        if( p_dr->i_tag == 0x9 )
++        if( p_dr->i_tag == 0x9 || p_dr->i_tag == 0xad )
+         {
+             uint16_t i_sysid = ((uint16_t)p_dr->p_data[0] << 8)
+                                     | p_dr->p_data[1];

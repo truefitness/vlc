@@ -3,7 +3,7 @@ Date: Wed, 10 Dec 2014 16:31:16 -0600
 Subject: SAP - Traverse subitems when sending item deleted signal
 
 ---
- lib/media_discoverer.c |   27 +++++++++++++++++++++++++--
+ lib/media_discoverer.c | 27 +++++++++++++++++++++++++--
  1 file changed, 25 insertions(+), 2 deletions(-)
 
 diff --git a/lib/media_discoverer.c b/lib/media_discoverer.c
@@ -75,4 +75,3 @@ index afa2891..8ea41cd 100644
      }
      libvlc_media_list_unlock( p_mdis->p_mlist );
  }
--- 

@@ -4,7 +4,7 @@ Subject: Fix race condition where stream thread is created after Stop signal
  is received by threads, leaving a zombie stream thread
 
 ---
- src/input/input.c |    6 ++++++
+ src/input/input.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
 diff --git a/src/input/input.c b/src/input/input.c
@@ -24,4 +24,3 @@ index 1ed5b9f..e3da454 100644
          /* Create the stream_t */
          in->p_stream = stream_AccessNew( p_access, ppsz_input_list );
          if( ppsz_input_list )
--- 

@@ -3,7 +3,7 @@ Date: Fri, 17 Apr 2015 09:38:07 -0500
 Subject: Add back delete announcement support in SAP module
 
 ---
- modules/services_discovery/sap.c |   10 ++++++++--
+ modules/services_discovery/sap.c | 10 ++++++++--
  1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/modules/services_discovery/sap.c b/modules/services_discovery/sap.c
@@ -30,4 +30,3 @@ index 12705d2..1e3dd4e 100644
              if( !b_need_delete )
              {
                  /* No need to go after six, as we start to trust the
--- 

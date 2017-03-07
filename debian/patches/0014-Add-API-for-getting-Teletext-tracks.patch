@@ -3,9 +3,9 @@ Date: Fri, 26 Feb 2016 22:19:46 -0600
 Subject: Add API for getting Teletext tracks
 
 ---
- include/vlc/libvlc_media_player.h |    9 +++++++++
- lib/libvlc.sym                    |    1 +
- lib/video.c                       |    7 +++++++
+ include/vlc/libvlc_media_player.h | 9 +++++++++
+ lib/libvlc.sym                    | 1 +
+ lib/video.c                       | 7 +++++++
  3 files changed, 17 insertions(+)
 
 diff --git a/include/vlc/libvlc_media_player.h b/include/vlc/libvlc_media_player.h
@@ -55,4 +55,3 @@ index 3a90caa..4bebce5 100644
  int libvlc_video_set_spu( libvlc_media_player_t *p_mi, int i_spu )
  {
      input_thread_t *p_input_thread = libvlc_get_input_thread( p_mi );
--- 

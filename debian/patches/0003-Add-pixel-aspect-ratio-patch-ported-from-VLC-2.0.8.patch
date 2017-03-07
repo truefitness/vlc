@@ -3,11 +3,11 @@ Date: Tue, 18 Nov 2014 09:31:50 -0600
 Subject: Add pixel aspect ratio patch (ported from VLC 2.0.8)
 
 ---
- include/vlc/libvlc_media_player.h |   11 +++++++++++
- lib/libvlc.sym                    |    1 +
- lib/media_player.c                |    9 +++++++++
- modules/video_output/vmem.c       |   20 +++++++++++++++++---
- src/video_output/display.c        |    4 ++--
+ include/vlc/libvlc_media_player.h | 11 +++++++++++
+ lib/libvlc.sym                    |  1 +
+ lib/media_player.c                |  9 +++++++++
+ modules/video_output/vmem.c       | 20 +++++++++++++++++---
+ src/video_output/display.c        |  4 ++--
  5 files changed, 40 insertions(+), 5 deletions(-)
 
 diff --git a/include/vlc/libvlc_media_player.h b/include/vlc/libvlc_media_player.h
@@ -145,4 +145,3 @@ index d8a2a74..1472252 100644
  
      vd->info.is_slow = false;
      vd->info.has_double_click = false;
--- 

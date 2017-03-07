@@ -4,7 +4,7 @@ Subject: Add upstream commit 4a1493db19bb1db6a57b49bed385764a7d41793e to fix
  a bug in alsa.c that can cause a crash.
 
 ---
- modules/access/alsa.c |    2 +-
+ modules/access/alsa.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/modules/access/alsa.c b/modules/access/alsa.c
@@ -27,4 +27,3 @@ index d82ae18..1125545 100644
      demux->pf_demux = NULL;
      demux->pf_control = Control;
      return VLC_SUCCESS;
--- 

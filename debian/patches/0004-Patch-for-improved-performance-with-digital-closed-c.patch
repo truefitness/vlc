@@ -1,14 +1,13 @@
 From: Mike Nolan <mpnolan@truefitness.com>
 Date: Tue, 18 Nov 2014 10:24:22 -0600
-Subject: Patch for improved performance with digital closed-captioning
- streams
+Subject: Patch for improved performance with digital closed-captioning streams
 
 ---
- modules/codec/cc.c               |   15 +-
- modules/text_renderer/freetype.c |  576 +++++++++++++++++++++-----------------
- modules/video_filter/Modules.am  |    3 +
- modules/video_filter/blend.cpp   |  411 ++++++++++++++++++++++++++-
- src/input/stream.c               |    2 +-
+ modules/codec/cc.c               |  15 +-
+ modules/text_renderer/freetype.c | 576 ++++++++++++++++++++++-----------------
+ modules/video_filter/Modules.am  |   3 +
+ modules/video_filter/blend.cpp   | 411 +++++++++++++++++++++++++++-
+ src/input/stream.c               |   2 +-
  5 files changed, 730 insertions(+), 277 deletions(-)
 
 diff --git a/modules/codec/cc.c b/modules/codec/cc.c
@@ -1579,4 +1578,3 @@ index 14f685d..2dfead5 100644
  #define STREAM_CACHE_TRACK_SIZE (STREAM_CACHE_SIZE/STREAM_CACHE_TRACK)
  
  typedef struct
--- 
