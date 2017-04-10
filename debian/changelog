@@ -1,10 +1,11 @@
-vlc (2.1.3-1~ubuntu12.04.2~ppa1+true17ubuntu1~1.gbp9d72ac) UNRELEASED; urgency=medium
+vlc (2.1.3-1~ubuntu12.04.2~ppa1+true18) trusty; urgency=medium
 
   ** SNAPSHOT build @9d72acc798782333073856f11f3137017736079a **
 
   * Initial patch for proidom support
+  * Bumped to true18 as Embedtek has validated patch
 
- -- Robert Hedges <rhedges@truefitness.com>  Tue, 07 Mar 2017 09:54:39 -0600
+ -- Robert Hedges <vagrant@True-0>  Mon, 10 Apr 2017 10:09:39 -0500
 
 vlc (2.1.3-1~ubuntu12.04.2~ppa1+true17) precise; urgency=low
 
